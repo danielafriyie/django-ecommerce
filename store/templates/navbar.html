@@ -1,0 +1,47 @@
+<nav class="navbar navbar-expand-md navbar-light bg-dark">
+    <a href="{% url 'store:home' %}" class="navbar-brand"><i class="fas fa-store text-warning fa-2x"></i></a>
+    <button type="button" class="navbar-toggler bg-light" data-toggle="collapse" data-target="#nav">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-between" id="nav">
+        <ul class="navbar-nav">
+            <li class="navbar-item dropdown">
+                <a class="nav-link text-light text-uppercase font-weight-bold px-3 dropdown-toggle" href=""
+                   data-toggle="dropdown">
+                    Categories
+                </a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="{% url 'store:home' %}">All Products</a>
+                    {% for category in links %}
+                        <a class="dropdown-item" href="{{ category.get_absolute_url }}">{{ category.name }}</a>
+                    {% endfor %}
+                </div>
+            </li>
+            <li class="navbar-item">
+                <a class="nav-link text-light text-uppercase font-weight-bold px-3" href="">
+                    Contact
+                </a>
+            </li>
+            <li class="navbar-item">
+                <a class="nav-link text-light text-uppercase font-weight-bold px-3" href="">
+                    About
+                </a>
+            </li>
+            {% if item_count > 0 %}
+                <li class="navbar-item">
+                <a class="nav-link text-light text-uppercase font-weight-bold px-3" href="{% url 'store:cart_detail' %}">
+                    <i class="fas fa-shopping-cart"></i>({{ item_count }})
+                </a>
+            {% endif %}
+        </ul>
+
+        <form class="form-inline">
+            <div class="input-group px-3">
+                <input type="text" name="" id="" placeholder="Search" class="form-control">
+                <div class="input-group-append">
+                    <button type="button" class="btn btn-warning" name="button"><i class="fas fa-search"></i></button>
+                </div>
+            </div>
+        </form>
+    </div>
+</nav>

@@ -1,0 +1,11 @@
+db.sqlite3
+venv
+.vscode
+media
+migrations
+.env
+.idea
+env
+__pycache__
+/__pycache__
+/__pycache__/
