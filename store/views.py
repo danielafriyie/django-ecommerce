@@ -1,10 +1,14 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.exceptions import ObjectDoesNotExist
 from django.conf import settings
+from django.contrib.auth.models import Group, User
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import login, authenticate, logout
 
 import stripe
 
 from .models import Category, Product, Cart, CartItem, Order, OrderItem
+from .forms import SignUpForm
 
 
 def home(request, category_slug=None):
@@ -166,3 +170,38 @@ def thanks_page(request, order_id):
     if order_id:
         customer_order = get_object_or_404(Order, pk=order_id)
     return render(request, 'store/thank_you.html', {'customer_order': customer_order})
+
+
+def signup_view(request):
+    if request.method == 'POST':
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            form.save()
+            signup_user = User.objects.get(username=username)
+            customer_group = Group.objects.get(name='Customer')
+            customer_group.user_set.add(signup_user)
+    else:
+        form = SignUpForm()
+    return render(request, 'store/signup.html', {'form': form})
+
+
+def signin_view(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(data=request.POST)
+        if form.is_valid():
+            username, password = form.cleaned_data.get('username'), form.cleaned_data.get('password')
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('store:home')
+            else:
+                return redirect('store:signup')
+    else:
+        form = AuthenticationForm()
+    return render(request, 'store/signin.html', {'form': form})
+
+
+def signout_view(requets):
+    logout(requets)
+    return redirect('store:signin')

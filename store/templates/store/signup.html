@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block title %} Create New Account {% endblock title %}
+
+{% block content %}
+    <section id="signup" class="text-center">
+        <div>
+            {% if not form.is_valid %}
+                <div class="mx-auto">
+                    <h1 class="text-center product_title">Create New Account</h1>
+                    <br>
+                    <div class="col-9 col-sm-9 col-md-6 col-lg-5 mx-auto bg-light">
+                        <br>
+                        <p>Enter the following information to create new account</p>
+                        <form action="{% url 'store:signup' %}" method="post">
+                            {% csrf_token %}
+                            <p>{{ form|crispy }}</p>
+                            <button type="submit" name="button" class="btn btn-secondary">
+                                Sign Up
+                            </button>
+                        </form>
+                        <br>
+                    </div>
+                </div>
+            {% else %}
+                <div class="mx-auto">
+                    <br>
+                    <h1 class="product_title text-center">You account has been succesfully created.</h1>
+                    <br>
+                    <div class="container">
+                        <p>
+                            Dear Customer,
+                            <br><br>
+                            You account has been created and is ready to use.
+                            <br>
+                            <a href="{% url 'store:home' %}">Continue shopping.</a> and enjoy the variety of product we
+                            have in G-Store.
+                        </p>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+        <br>
+    </section>
+{% endblock content %}

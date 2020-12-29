@@ -15,7 +15,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'store.apps.StoreConfig',
-    'stripe'
+    'stripe',
+    'crispy_forms'
 ]
 
 MIDDLEWARE = [
@@ -70,7 +71,7 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static_files')
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'core/static')
@@ -85,5 +86,8 @@ MESSAGE_TAGS = {
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 CONN_MAX_AGE = 30
+
 STRIPE_PUBLISHABLE_KEY = config('STRIPE_PUBLISHABLE_KEY')
 STRIPE_SECRET_KEY = config('STRIPE_SECRET_KEY')
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
