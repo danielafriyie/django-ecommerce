@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404, redirect, reverse
+from django.shortcuts import render, get_object_or_404, redirect
 from django.core.exceptions import ObjectDoesNotExist
 from django.conf import settings
 from django.contrib.auth.models import Group, User
@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 
 import stripe
 
-from .models import Category, Product, Cart, CartItem, Order, OrderItem
+from .models import Category, Product, Cart, CartItem, Order, OrderItem, Review
 from .forms import SignUpForm
 
 
@@ -30,7 +30,13 @@ def product_page(request, category_slug, product_slug):
         product = Product.objects.get(category__slug=category_slug, slug=product_slug)
     except Exception as e:
         raise e
-    return render(request, 'store/product.html', {'product': product})
+
+    if request.method == 'POST' and request.user.is_authenticated and request.POST['content']:
+        Review.objects.create(product=product, user=request.user, content=request.POST['content'])
+
+    reviews = Review.objects.filter(product=product)
+
+    return render(request, 'store/product.html', {'product': product, 'reviews': reviews})
 
 
 def _cart_id(request):

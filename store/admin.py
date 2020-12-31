@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category, Product, Cart, CartItem, OrderItem, Order
+from .models import Category, Product, Cart, CartItem, OrderItem, Order, Review
 
 
 @admin.register(Category)
@@ -59,3 +59,4 @@ class OrderAdmin(admin.ModelAdmin):
 
 admin.site.register(Cart)
 admin.site.register(CartItem)
+admin.site.register(Review)
