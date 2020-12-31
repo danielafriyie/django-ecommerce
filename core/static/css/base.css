@@ -33,3 +33,7 @@ body {
 .custom-div {
     margin-bottom: 20px !important;
 }
+
+.navbar-link-item:hover {
+    cursor: pointer;
+}

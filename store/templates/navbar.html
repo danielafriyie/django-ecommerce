@@ -28,13 +28,18 @@
                 </a>
             </li>
             {% if request.user.is_authenticated %}
-                <li class="navbar-item">
-                <span class="nav-link text-light text-uppercase font-weight-bold px-3">
+                <li class="navbar-item dropdown navbar-link-item">
+                <span class="nav-link text-light text-uppercase font-weight-bold px-3 dropdown-toggle"
+                      data-toggle="dropdown">
                     Welcome, {{ request.user }} <i class="fa fa-user-circle"></i>
                 </span>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="{% url 'store:order_history' %}">Order History</a>
+                    </div>
                 </li>
                 <li class="navbar-item">
-                    <a class="nav-link text-light text-uppercase font-weight-bold px-3" href="{% url 'store:signout' %}">
+                    <a class="nav-link text-light text-uppercase font-weight-bold px-3"
+                       href="{% url 'store:signout' %}">
                         Signout <i class="fa fa-sign-out-alt"></i>
                     </a>
                 </li>
@@ -59,11 +64,17 @@
             {% endif %}
         </ul>
 
-        <form class="form-inline">
+        <form class="form-inline" action="{% url 'store:search' %}" method="get">
             <div class="input-group px-3">
-                <input type="text" name="" id="" placeholder="Search" class="form-control">
+                <label for="search" hidden></label>
+                {% if values.search %}
+                    <input type="text" name="search" id="search" placeholder="Search" class="form-control"
+                           value="{{ values.search }}">
+                {% else %}
+                    <input type="text" name="search" id="search" placeholder="Search" class="form-control">
+                {% endif %}
                 <div class="input-group-append">
-                    <button type="button" class="btn btn-warning" name="button"><i class="fas fa-search"></i></button>
+                    <button type="submit" class="btn btn-warning"><i class="fas fa-search"></i></button>
                 </div>
             </div>
         </form>

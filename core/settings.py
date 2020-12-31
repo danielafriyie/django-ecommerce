@@ -43,7 +43,8 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'store.context_preprocessor.menu_links',
-                'store.context_preprocessor.counter'
+                'store.context_preprocessor.counter',
+                'store.context_preprocessor.form_values'
             ],
         },
     },

@@ -23,3 +23,10 @@ def menu_links(request):
     }
 
     return context
+
+
+def form_values(request):
+    context = {
+        'values': request.GET
+    }
+    return context

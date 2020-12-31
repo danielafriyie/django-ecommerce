@@ -1,9 +1,10 @@
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404, redirect, reverse
 from django.core.exceptions import ObjectDoesNotExist
 from django.conf import settings
 from django.contrib.auth.models import Group, User
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth.decorators import login_required
 
 import stripe
 
@@ -205,3 +206,23 @@ def signin_view(request):
 def signout_view(requets):
     logout(requets)
     return redirect('store:signin')
+
+
+@login_required(redirect_field_name='next', login_url='store:signin')
+def order_history(request):
+    email = request.user.email
+    order_details = Order.objects.filter(email_address=email)
+    return render(request, 'store/orders_list.html', {'order_details': order_details})
+
+
+@login_required(redirect_field_name='next', login_url='store:signin')
+def view_order(request, order_id):
+    email = request.user.email
+    order = Order.objects.get(pk=order_id, email_address=email)
+    order_items = OrderItem.objects.filter(order=order)
+    return render(request, 'store/order_detail.html', {'order': order, 'order_items': order_items})
+
+
+def search(request):
+    products = Product.objects.filter(name__contains=request.GET['search'])
+    return render(request, 'store/home.html', {'products': products})
